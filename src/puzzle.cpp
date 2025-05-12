@@ -15,13 +15,35 @@ Puzzle::Puzzle()
   ShuffleBoard();
 }
 
+// Improved shuffling to ensure puzzles are solvable
 void Puzzle::ShuffleBoard() {
   std::random_device rd;
   std::mt19937 g(rd());
-  std::shuffle(board_.begin(), board_.end(), g);
 
   // find the empty tile index
   empty_index_ = std::find(board_.begin(), board_.end(), 0) - board_.begin();
+
+  // Make random valid moves
+  const int kShuffleMoves = 1000;
+  for (int i = 0; i < kShuffleMoves; ++i) {
+    std::vector<int> possible_moves;
+    auto [empty_x, empty_y] = GetColRow(empty_index_);
+
+    // Check all four directions
+    if (empty_y > 0) possible_moves.push_back(empty_index_ - kGridSize);  // Up
+    if (empty_y < kGridSize - 1)
+      possible_moves.push_back(empty_index_ + kGridSize);         // Down
+    if (empty_x > 0) possible_moves.push_back(empty_index_ - 1);  // Left
+    if (empty_x < kGridSize - 1)
+      possible_moves.push_back(empty_index_ + 1);  // Right
+
+    // Pick a random direction
+    int moveIndex = possible_moves[rand() % possible_moves.size()];
+
+    // Swap tiles
+    std::swap(board_[empty_index_], board_[moveIndex]);
+    empty_index_ = moveIndex;
+  }
 }
 
 bool Puzzle::IsSolved() {
