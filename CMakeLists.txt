@@ -31,12 +31,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# headers
-include_directories(include)
-file(GLOB_RECURSE HDRS CONFIGURE_DEPENDS
-    "${CMAKE_SOURCE_DIR}/include/*.h"
-)
-
 # sources
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
     "${CMAKE_SOURCE_DIR}/src/*.cpp"
@@ -44,6 +38,12 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
 
 # targets
 add_executable(${PROJECT_NAME} ${SRCS})
+
+# headers
+target_include_directories(${PROJECT_NAME} PRIVATE include)
+file(GLOB_RECURSE HDRS CONFIGURE_DEPENDS
+    "${CMAKE_SOURCE_DIR}/include/*.h"
+)
 
 # libraries
 target_link_libraries(${PROJECT_NAME}
