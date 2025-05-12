@@ -1,5 +1,6 @@
 #pragma once
 
+#include <raylib.h>
 #include <utility>
 #include "constants.h"
 
@@ -11,3 +12,5 @@ inline std::pair<int, int> GetColRow(int index) {
 inline std::pair<int, int> GetXY(int index) { return GetColRow(index); }
 
 inline int GetIndex(int col, int row) { return row * kGridSize + col; }
+
+Color Haxc(const std::string& color);

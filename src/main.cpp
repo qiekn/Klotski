@@ -2,6 +2,8 @@
 #include "game.h"
 
 int main() {
+  SetTraceLogLevel(LOG_DEBUG);
+
   Game game;
   game.Run();
 

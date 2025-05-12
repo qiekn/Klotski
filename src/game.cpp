@@ -14,8 +14,6 @@ void Game::Run() {
 }
 
 void Game::Init() {
-  SetTraceLogLevel(LOG_DEBUG);
-
   InitWindow(kScreenWidth, kScreenHeight, "game");
   SetTargetFPS(60);
 }
@@ -26,6 +24,7 @@ void Game::Update() {
     Vector2 mouse_pos = GetMousePosition();
     puzzle.MoveTile(mouse_pos.x, mouse_pos.y);
   }
+  puzzle.Update();
 }
 
 void Game::Draw() {
