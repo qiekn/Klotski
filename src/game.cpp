@@ -22,7 +22,7 @@ void Game::Init() {
 
 void Game::Update() {
   // TODO: handle mouse input <2025-05-12 22:04, @qiekn> //
-  if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+  if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
     Vector2 mouse_pos = GetMousePosition();
     puzzle.MoveTile(mouse_pos.x, mouse_pos.y);
   }
