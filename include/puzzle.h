@@ -8,7 +8,7 @@ public:
 
   void ShuffleBoard();
   bool IsSolved();
-  void MoveTile();
+  void MoveTile(int mouse_x, int mouse_y);
   void Draw();
 
 private:

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <random>
 #include "constants.h"
+#include "utils.h"
 
 Puzzle::Puzzle()
     : board_(kGridSize * kGridSize), empty_index_(kGridSize * kGridSize - 1) {
@@ -29,7 +30,22 @@ bool Puzzle::IsSolved() {
   return board_.back() == 0;
 }
 
-void Puzzle::MoveTile() {}
+void Puzzle::MoveTile(int mouse_x, int mouse_y) {
+  int clicked_index = (mouse_y / kTileSize) * kGridSize + (mouse_x / kTileSize);
+
+  TraceLog(LOG_DEBUG, "clicked_index = %d", clicked_index);
+  auto [empty_row, empty_col] = GetRowCol(empty_index_);
+  auto [clicked_row, clicked_col] = GetRowCol(clicked_index);
+  TraceLog(LOG_DEBUG, "mouse click at %d %d", clicked_row, clicked_col);
+
+  // Check if the clicked tile is adjacent to the empty tile
+  if ((std::abs(empty_row - clicked_row) == 1 && empty_col == clicked_col) ||
+      (std::abs(empty_col - clicked_col) == 1 && empty_row == clicked_row)) {
+    // Swap tiles
+    std::swap(board_[empty_index_], board_[clicked_index]);
+    empty_index_ = clicked_index;
+  }
+}
 
 void Puzzle::Draw() {
   for (int i = 0; i < board_.size(); ++i) {

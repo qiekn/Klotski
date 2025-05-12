@@ -14,7 +14,7 @@ void Game::Run() {
 }
 
 void Game::Init() {
-  SetTraceLogLevel(LOG_WARNING);
+  SetTraceLogLevel(LOG_DEBUG);
 
   InitWindow(kScreenWidth, kScreenHeight, "game");
   SetTargetFPS(60);
@@ -22,9 +22,11 @@ void Game::Init() {
 
 void Game::Update() {
   // TODO: handle mouse input <2025-05-12 22:04, @qiekn> //
-  if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+  if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
     Vector2 mouse_pos = GetMousePosition();
-    // puzzle.MoveTile(mouse_pos.x, mouse_pos.y);
+    puzzle.MoveTile(mouse_pos.x, mouse_pos.y);
+    TraceLog(LOG_DEBUG, "mouse left clicked at %.2f %.2f", mouse_pos.x,
+             mouse_pos.y);
   }
 }
 
