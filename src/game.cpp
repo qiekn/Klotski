@@ -25,8 +25,6 @@ void Game::Update() {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
     Vector2 mouse_pos = GetMousePosition();
     puzzle.MoveTile(mouse_pos.x, mouse_pos.y);
-    TraceLog(LOG_DEBUG, "mouse left clicked at %.2f %.2f", mouse_pos.x,
-             mouse_pos.y);
   }
 }
 

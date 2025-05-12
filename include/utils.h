@@ -3,6 +3,9 @@
 #include <utility>
 #include "constants.h"
 
-inline std::pair<int, int> GetRowCol(int index) {
-  return {index / kGridSize, index % kGridSize};
+// get grid position {x, y}
+inline std::pair<int, int> GetColRow(int index) {
+  return {index % kGridSize, index / kGridSize};
 }
+
+inline int GetIndex(int col, int row) { return row * kGridSize + col; }
