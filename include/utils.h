@@ -6,11 +6,11 @@
 
 // get grid position {x, y}
 inline std::pair<int, int> GetColRow(int index) {
-  return {index % kGridSize, index / kGridSize};
+  return {index % kTileCount, index / kTileCount};
 }
 
 inline std::pair<int, int> GetXY(int index) { return GetColRow(index); }
 
-inline int GetIndex(int col, int row) { return row * kGridSize + col; }
+inline int GetIndex(int col, int row) { return row * kTileCount + col; }
 
-Color Haxc(const std::string& color);
+Color Haxc(const std::string& color, int alpha = 255);
