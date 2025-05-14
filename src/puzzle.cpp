@@ -7,7 +7,8 @@
 #include "utils.h"
 
 Puzzle::Puzzle()
-    : board_(kGridSize * kGridSize), empty_index_(kGridSize * kGridSize - 1) {
+    : board_(kTileCount * kTileCount),
+      empty_index_(kTileCount * kTileCount - 1) {
   // Init board
   for (int i = 0; i < board_.size(); ++i) {
     board_[i] = i + 1;
@@ -33,11 +34,11 @@ void Puzzle::ShuffleBoard() {
     auto [empty_x, empty_y] = GetColRow(empty_index_);
 
     // Check all four directions
-    if (empty_y > 0) possible_moves.push_back(empty_index_ - kGridSize);  // Up
-    if (empty_y < kGridSize - 1)
-      possible_moves.push_back(empty_index_ + kGridSize);         // Down
+    if (empty_y > 0) possible_moves.push_back(empty_index_ - kTileCount);  // Up
+    if (empty_y < kTileCount - 1)
+      possible_moves.push_back(empty_index_ + kTileCount);        // Down
     if (empty_x > 0) possible_moves.push_back(empty_index_ - 1);  // Left
-    if (empty_x < kGridSize - 1)
+    if (empty_x < kTileCount - 1)
       possible_moves.push_back(empty_index_ + 1);  // Right
 
     // Pick a random direction
@@ -58,8 +59,9 @@ bool Puzzle::IsSolved() {
 
 void Puzzle::MoveTile(int mouse_x, int mouse_y) {
   TraceLog(LOG_DEBUG, "**********MoveTile**********");
-  int clicked_index = (mouse_y / kTileSize) * kGridSize + (mouse_x / kTileSize);
-  if (clicked_index >= kGridSize * kGridSize) return;
+  int clicked_index =
+      (mouse_y / kTileSize) * kTileCount + (mouse_x / kTileSize);
+  if (clicked_index >= kTileCount * kTileCount) return;
 
   auto [empty_x, empty_y] = GetColRow(empty_index_);
   auto [click_x, click_y] = GetColRow(clicked_index);
@@ -119,6 +121,15 @@ void Puzzle::MoveTile(int mouse_x, int mouse_y) {
 }
 
 void Puzzle::Update() {
+  video_.Update();
+
+  // hold <tab> to show hint
+  if (IsKeyDown(KEY_TAB)) {
+    show_hint_ = true;
+  } else {
+    show_hint_ = false;
+  }
+  // press <h> to toggle color hint
   if (IsKeyPressed(KEY_H)) {
     show_hint_color_ = !show_hint_color_;
   }
@@ -128,22 +139,29 @@ void Puzzle::Draw() {
   for (int i = 0; i < board_.size(); ++i) {
     if (board_[i] == 0) continue;  // Skip empty tile
 
-    int row = i / kGridSize;
-    int col = i % kGridSize;
+    int row = i / kTileCount;
+    int col = i % kTileCount;
     int x = col * kTileSize;
     int y = row * kTileSize;
 
-    // Draw tile rectangle
-    Color color = LIGHTGRAY;
-    if (show_hint_color_) color = colors_[board_[i] - 1];
-    DrawRectangle(x, y, kTileSize - 5, kTileSize - 5, color);
+    // Draw Video
+    if (draw_video_) {
+      video_.Draw(board_[i], x, y);
+    }
 
-    // Draw tile number
-    std::string numStr = std::to_string(board_[i]);
-    int fontSize = 40;
-    int textWidth = MeasureText(numStr.c_str(), fontSize);
-    DrawText(numStr.c_str(), x + (kTileSize - textWidth) / 2,
-             y + (kTileSize - fontSize) / 2, fontSize, WHITE);
+    if (show_hint_) {
+      // Draw tile rectangle background
+      Color color = Haxc("#f5f5f5", 150);  // default color
+      if (show_hint_color_) color = colors_[board_[i] - 1];
+      DrawRectangle(x, y, kTileSize - kBorder, kTileSize - kBorder, color);
+
+      // Draw tile number
+      std::string numStr = std::to_string(board_[i]);
+      int fontSize = 40;
+      int textWidth = MeasureText(numStr.c_str(), fontSize);
+      DrawText(numStr.c_str(), x + (kTileSize - textWidth) / 2,
+               y + (kTileSize - fontSize) / 2, fontSize, WHITE);
+    }
   }
 }
 
@@ -151,20 +169,20 @@ void Puzzle::InitColor() {
   // clang-format off
   Color hint_colors[10] = {
       BLANK,
-      Haxc("#fae4d0"),
-      Haxc("#b7fce5"),
-      Haxc("#b8e2fc"),
-      Haxc("#d5d6fa"),
+      Haxc("#fae4d0", 150),
+      Haxc("#b7fce5", 150),
+      Haxc("#b8e2fc", 150),
+      Haxc("#d5d6fa", 150),
   };
   // clang-format on
 
   // Assign colors based on the tile's target position
-  colors_.resize(kGridSize * kGridSize);
-  for (int k = 1; k < kGridSize; k++) {
-    for (int i = k - 1; i < kGridSize; i++) {
+  colors_.resize(kTileCount * kTileCount);
+  for (int k = 1; k < kTileCount; k++) {
+    for (int i = k - 1; i < kTileCount; i++) {
       colors_[GetIndex(k - 1, i)] = hint_colors[k];
       colors_[GetIndex(i, k - 1)] = hint_colors[k];
     }
   }
-  colors_[kGridSize * kGridSize - 1] = BLANK;
+  colors_[kTileCount * kTileCount - 1] = BLANK;
 }

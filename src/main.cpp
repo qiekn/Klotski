@@ -2,7 +2,7 @@
 #include "game.h"
 
 int main() {
-  SetTraceLogLevel(LOG_DEBUG);
+  SetTraceLogLevel(LOG_WARNING);
 
   Game game;
   game.Run();

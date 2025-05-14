@@ -1,6 +1,7 @@
 #pragma once
 
 #include "puzzle.h"
+
 class Game {
 public:
   Game() = default;
@@ -14,5 +15,5 @@ private:
   void Update();
   void Draw();
 
-  Puzzle puzzle;
+  Puzzle puzzle_;
 };

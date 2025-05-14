@@ -1,6 +1,7 @@
 #pragma once
 
-const int kGridSize = 5;
+const int kTileCount = 5;
 const int kTileSize = 100;
-const int kScreenWidth = kGridSize * kTileSize;
-const int kScreenHeight = kGridSize * kTileSize;
+const int kBorder = 2;
+const int kScreenWidth = kTileCount * kTileSize;
+const int kScreenHeight = kTileCount * kTileSize;

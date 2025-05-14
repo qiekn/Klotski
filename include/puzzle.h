@@ -2,6 +2,7 @@
 
 #include <raylib.h>
 #include <vector>
+#include "video.h"
 
 class Puzzle {
 public:
@@ -23,5 +24,9 @@ private:
   int empty_index_;
 
   std::vector<Color> colors_;
+  bool show_hint_ = false;
   bool show_hint_color_ = true;
+  bool draw_video_ = true;
+
+  PuzzleVideo video_;
 };
