@@ -9,6 +9,11 @@ https://github.com/user-attachments/assets/aa1e57ed-aaf5-4f20-ac7f-285c09504f4b
 press `tab` to show number hint  
 press `h` to toggle color hint
 
+## Dependences
+
+You need install ffmpeg first.
+For example, in macOS you can use homebrew: `brew install ffmpeg`
+
 ## Quickstart
 
 ```bash
